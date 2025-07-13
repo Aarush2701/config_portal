@@ -2,9 +2,7 @@ import { Component,NgZone,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-declare var window: any;
-
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-auth-hub',
@@ -12,10 +10,6 @@ declare var window: any;
   imports: [CommonModule, FormsModule],
   templateUrl: './auth-hub.html',
   styleUrl: './auth-hub.css'
-})
-
-@Injectable({
-  providedIn: 'root'
 })
 export class AuthHub implements OnInit {
   tableData: any[] = [];
@@ -45,7 +39,7 @@ export class AuthHub implements OnInit {
 
   constructor(private http: HttpClient, private ngZone: NgZone) {}
   
-  private apiUrl = window.__env.apiUrl;
+  apiUrl = environment.apiUrl;
 
   
   ngOnInit(): void {
