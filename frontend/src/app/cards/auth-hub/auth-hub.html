@@ -1,0 +1,218 @@
+
+<div *ngIf="showTable">
+  <div class="search-bar">
+    <div class="left-section">
+    <label for="search">ID</label>
+    <input id="search" [(ngModel)]="searchTerm" placeholder="Search..." />
+  </div>
+  <div class="right-section navbutton">
+    <button (click)="searchData()">Search</button>
+    <button (click)="clearSearch()">Clear</button>
+  </div></div>
+<div class="table-div">
+  <table border="1" class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>SERVICE_ID</th>
+        <th>CLIENT_ID</th>
+        <th>AUTH_SCHEME</th>
+        <th>DESCRIPTION</th>
+        <th>SCOPE</th>
+        <th>CLIENT_CONFIG_ID</th>
+        <th>REVOKE_SCHEME</th>
+        <th>IS_MULTI_USER</th>
+        <th>CLIENT_SALT</th>
+        <th>IP_WHITELIST_FLAG</th>
+        <th>IP_WHITELIST_DATA</th>
+      </tr></thead>
+      <tbody>
+      <tr *ngFor="let row of tableData">
+        <td>{{ row.ID }}</td>
+        <td>{{ row.SERVICE_ID }}</td>
+        <td>{{ row.CLIENT_ID }}</td>
+        <td>{{ row.AUTH_SCHEME }}</td>
+        <td>{{ row.DESCRIPTION }}</td>
+        <td>{{ row.SCOPE }}</td>
+        <td>{{ row.CLIENT_CONFIG_ID }}</td>
+        <td>{{ row.REVOKE_SCHEME }}</td>
+        <td>{{ row.IS_MULTI_USER }}</td>
+        <td>{{ row.CLIENT_SALT }}</td>
+        <td>{{ row.IP_WHITELIST_FLAG }}</td>
+        <td>{{ row.IP_WHITELIST_DATA }}</td>
+      </tr></tbody>
+      <tr *ngIf="tableData.length === 0">
+        <td colspan="12" style="text-align:center;">No data found</td>
+      </tr>
+  </table></div>
+
+  <div class="auth-buttons">
+    <button (click)="showAddForm()">Add</button>
+    <button (click)="showUpdateForm()">Update</button>
+    <div class="del-btn">
+    <button (click)="showDeleteForm()">Delete</button></div>
+  </div>
+</div>
+
+<div *ngIf="showForm" class="auth-section">
+  <h3>{{ isUpdateMode ? 'Update' : 'Add' }} Record</h3>
+  
+  <div class="auth-field">
+    <label>ID</label>
+    <!-- <label for="authField1">ID</label>
+    <input id="authField1" type="text" [(ngModel)]="authField1" placeholder="ID" /> -->
+  <input
+  type="text"
+  name="authField1"
+  [(ngModel)]="authField1"
+  required pattern="^[0-9]+$" #idField="ngModel" placeholder="ID"/>
+ <!-- Validation messages -->
+ <div *ngIf="idField.invalid && idField.touched" style="color: red;">
+  <div *ngIf="idField.errors?.['required']">ID is required.</div>
+  <div *ngIf="idField.errors?.['pattern']">ID must be a number.</div>
+ </div></div>
+
+  <div class="auth-field">
+    <!-- <label for="authField2">SERVICE_ID</label>
+    <input id="authField2" type="text" [(ngModel)]="authField2" placeholder="SERVICE_ID" /> -->
+    <label>SERVICE_ID</label>
+    <input
+    type="text"
+    name="authField2"
+    [(ngModel)]="authField2"
+    required #service_idField="ngModel" placeholder="SERVICE_ID"/>
+    <!-- Validation messages -->
+    <div *ngIf="service_idField.invalid && service_idField.touched" style="color: red;">
+    <div *ngIf="service_idField.errors?.['required']">SERVICE_ID is required.</div></div>
+  </div>
+
+  <div class="auth-field">
+    <!-- <label for="authField3">CLIENT_ID</label>
+    <input id="authField3" type="text" [(ngModel)]="authField3" placeholder="CLIENT_ID" /> -->
+    <label>CLIENT_ID</label>
+    <input
+    type="text"
+    name="authField3"
+    [(ngModel)]="authField3"
+    required #client_idField="ngModel" placeholder="CLIENT_ID"/>
+    <!-- Validation messages -->
+    <div *ngIf="client_idField.invalid && client_idField.touched" style="color: red;">
+    <div *ngIf="client_idField.errors?.['required']">CLIENT_ID is required.</div></div>
+  </div>
+
+
+  <div class="auth-field">
+    <label for="authField4">AUTH_SCHEME</label>
+    <input id="authField4" type="text" [(ngModel)]="authField4" placeholder="AUTH_SCHEME" />
+  </div>
+
+  <div class="auth-field">
+    <label for="authField5">DESCRIPTION</label>
+    <input id="authField5" type="text" [(ngModel)]="authField5" placeholder="DESCRIPTION" />
+  </div>
+
+  <div class="auth-field">
+    <label for="authField6">SCOPE</label>
+    <input id="authField6" type="text" [(ngModel)]="authField6" placeholder="SCOPE" />
+  </div>
+
+  <div class="auth-field">
+    <!-- <label for="authField7">CLIENT_CONFIG_ID</label>
+    <input id="authField7" type="text" [(ngModel)]="authField7" placeholder="CLIENT_CONFIG_ID" /> -->
+    <label>CLIENT_CONFIG_ID</label>
+  <input
+  type="text"
+  name="authField7"
+  [(ngModel)]="authField7"
+  #configId="ngModel"
+  pattern="^[0-9]+$" placeholder="CLIENT_CONFIG_ID"
+/>
+<div *ngIf="configId.invalid && configId.touched" style="color: red;">
+  <span *ngIf="configId.errors?.['pattern']">Must be a valid number.</span>
+</div>
+  </div>
+
+  <div class="auth-field">
+    <label for="authField8">REVOKE_SCHEME</label>
+    <input id="authField8" type="text" [(ngModel)]="authField8" placeholder="REVOKE_SCHEME" />
+  </div>
+
+  <div class="auth-field">
+    <!-- <label for="authField9">IS_MULTI_USER</label>
+    <input id="authField9" type="text" [(ngModel)]="authField9" placeholder="IS_MULTI_USER" /> -->
+  <label>IS_MULTI_USER</label>
+  <input
+    type="text"
+    name="authField9"
+    [(ngModel)]="authField9"
+    min="0"
+    max="1"
+    pattern="[0,1]"
+    #multiUser="ngModel" placeholder="IS_MULTI_USER"
+  />
+  <div *ngIf="multiUser.invalid && multiUser.touched" style="color: red;">
+    <span *ngIf="multiUser.errors?.['pattern']">Value must be 0 or 1.</span>
+  </div>
+  </div>
+
+  <div class="auth-field">
+    <label for="authField10">CLIENT_SALT</label>
+    <input id="authField10" type="text" [(ngModel)]="authField10" placeholder="CLIENT_SALT" />
+  </div>
+
+  <div class="auth-field">
+    <!-- <label for="authField11">IP_WHITELIST_FLAG</label>
+    <input id="authField11" type="text" [(ngModel)]="authField11" placeholder="IP_WHITELIST_FLAG" /> -->
+  <label>IP_WHITELIST_FLAG</label>
+  <input
+    type="text"
+    name="authField11"
+    [(ngModel)]="authField11"
+    min="0"
+    max="1"
+    pattern="[0,1]"
+    #ipFlag="ngModel" placeholder="IP_WHITELIST_FLAG"
+  />
+  <div *ngIf="ipFlag.invalid && ipFlag.touched" style="color: red;">
+    <span *ngIf="ipFlag.errors?.['pattern']">Value must be 0 or 1.</span>
+  </div>
+  </div>
+
+  <div class="auth-field">
+    <label for="authField12">IP_WHITELIST_DATA</label>
+    <input id="authField12" type="text" [(ngModel)]="authField12" placeholder="IP_WHITELIST_DATA" />
+  </div>
+  
+  <div class="auth-buttons">
+  <button (click)="submitData()">{{ isUpdateMode ? 'Update' : 'Add' }}</button>
+  <div class="back-btn">
+    <button (click)="backToTable()">Back</button>
+  </div>
+  </div>
+  </div>
+
+<div *ngIf="showFormDel" class="auth-section">
+  <h3>Delete Record</h3>
+  <div class="auth-field"><label for="deleteId">Delete by ID:  </label>
+  <input type="text" [(ngModel)]="deleteId" [value]="deleteId === null ? '' : deleteId" required placeholder="Enter the ID"/>
+  
+  </div>
+    <!-- <div class="navbutton back-btn">
+  <button (click)="deleteData()">Delete</button> 
+    </div>
+    <div class="auth-buttons back-btn">
+    <button (click)="backToTable()">Back</button>
+    </div> -->
+    <div class="auth-buttons">
+      <div class="del-btn">
+    <button (click)="deleteData()">Delete</button> </div>
+    
+    <div class=" back-btn">
+    <button (click)="backToTable()">Back</button>
+    </div></div>
+
+</div>
+
+
+
+
