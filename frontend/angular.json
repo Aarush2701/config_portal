@@ -76,7 +76,8 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "scripts": ["src/env.js"]
           }
         }
       }

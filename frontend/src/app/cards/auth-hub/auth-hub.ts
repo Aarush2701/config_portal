@@ -2,6 +2,9 @@ import { Component,NgZone,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+declare var window: any;
+
 
 @Component({
   selector: 'app-auth-hub',
@@ -9,6 +12,10 @@ import { HttpClient } from '@angular/common/http';
   imports: [CommonModule, FormsModule],
   templateUrl: './auth-hub.html',
   styleUrl: './auth-hub.css'
+})
+
+@Injectable({
+  providedIn: 'root'
 })
 export class AuthHub implements OnInit {
   tableData: any[] = [];
@@ -37,6 +44,8 @@ export class AuthHub implements OnInit {
   
 
   constructor(private http: HttpClient, private ngZone: NgZone) {}
+  
+  private apiUrl = window.__env.apiUrl;
 
   
   ngOnInit(): void {
@@ -44,7 +53,7 @@ export class AuthHub implements OnInit {
   }
 
   loadTable() {
-  this.http.get<any[]>('http://localhost:3000/authhub').subscribe({
+  this.http.get<any[]>(`${this.apiUrl}/authhub`).subscribe({
     next: (data) => {
       this.tableData = data || [];
     },
@@ -61,7 +70,7 @@ export class AuthHub implements OnInit {
     }
 
     this.http
-      .get<any[]>(`http://localhost:3000/authhub/search/${this.searchColumn}/${this.searchTerm}`)
+  .get<any[]>(`${this.apiUrl}/authhub/search/${this.searchColumn}/${this.searchTerm}`)
       .subscribe({
         next: (res) => (this.tableData = res),
         error: () => (this.tableData = [])
@@ -150,10 +159,9 @@ export class AuthHub implements OnInit {
     return;
   }
   // till here 08-06-2025 23.57
-
-    const url = this.isUpdateMode
-      ? `http://localhost:3000/authhub/${this.authField1}`
-      : 'http://localhost:3000/authhub';
+  const url = this.isUpdateMode
+  ? `${this.apiUrl}/authhub/${this.authField1}`
+  : `${this.apiUrl}/authhub`;
 
     const method = this.isUpdateMode ? this.http.put : this.http.post;
 
@@ -175,7 +183,8 @@ deleteData() {
     return;
   }
 
-  this.http.delete<any>(`http://localhost:3000/authhub/delete/${this.deleteId}`)
+  this.http.delete<any>(`${this.apiUrl}/authhub/delete/${this.deleteId}`)
+
     .subscribe({
       next: (res) => {
         alert(res.message);
