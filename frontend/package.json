@@ -4,7 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "inject-env": "echo \"(function (window) { window.__env = { apiUrl: '${API_URL}' }; })(this);\" > src/env.js",
