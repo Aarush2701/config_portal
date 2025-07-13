@@ -1,30 +1,30 @@
-# --------------------------------------
-# Stage 1: Build the application with Maven
-# --------------------------------------
+# ----------------------------
+# Stage 1: Build the Spring Boot app using Maven
+# ----------------------------
 FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
 
-# Set working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy all project files to container
+# Copy the project files
 COPY . .
 
-# Package the application (adjust module name if needed)
+# Build the project and skip tests
 RUN mvn clean package -DskipTests
 
-# --------------------------------------
-# Stage 2: Run the packaged Spring Boot JAR
-# --------------------------------------
+# ----------------------------
+# Stage 2: Run the Spring Boot app
+# ----------------------------
 FROM eclipse-temurin:21-jdk-alpine
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy the built JAR from the build stage
-COPY --from=build /app/auth-hub/target/auth-hub-1.0.0.jar app.jar
+# Copy the built JAR file from the previous stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Expose the port your app runs on (adjust if different)
+# Expose the port Spring Boot uses
 EXPOSE 8080
 
-# Run the application
+# Start the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
